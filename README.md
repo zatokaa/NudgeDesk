@@ -194,3 +194,21 @@ This automatically compiles all dependencies, collects CustomTkinter assets, emb
 - **Hardware/User-Bound DPAPI Vault**: Tokens are secured in Windows Credential Manager or protected via Windows Data Protection API (DPAPI).
 - **Clean Disconnect**: Clicking **Sign Out** wipes stored tokens and cache immediately.
 
+---
+
+## 📄 License & Terms of Use
+
+This project is provided **free of charge** for everyone.
+
+- **Open to Modify & Upgrade:** Anyone is welcome to use, modify, study, customize, and upgrade this software for personal and non-commercial purposes.
+- **Non-Commercial Only (Do Not Sell):** Selling, reselling, monetizing, or distributing this software or its source code for profit is strictly prohibited. Keep it free.
+
+### Copyright Notice
+
+Copyright © 2026 [PremiumBayy](https://www.premiumbayy.com/). All Rights Reserved.
+
+This software, source code, design, and associated assets are proprietary. Unauthorized commercial use, resale, or paid redistribution without prior written authorization is strictly prohibited.
+
+For support or enterprise inquiries, visit [www.PremiumBayy.com](https://www.premiumbayy.com/).
+
+
