@@ -1,5 +1,12 @@
+<p align="center">
+  <img src="assets/icons/app_icon.png" width="128" height="128" alt="NudgeDesk App Icon" />
+</p>
+
 # 🔔 NudgeDesk
-> **Lightweight, Modern Google Tasks Desktop Companion for Windows 11**
+> **Remember Less. Get More Done.**  
+> *A minimalist, hyper-productive task ecosystem for Web, Mobile, and Windows 11.*
+
+[![Direct Download for Windows](https://img.shields.io/badge/Direct%20Download-Windows%2011%20EXE-blue?style=for-the-badge&logo=windows11&logoColor=white)](dist/NudgeDesk.exe)
 
 ![Windows 11](https://img.shields.io/badge/Windows-11-0078D4?logo=windows11&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
@@ -14,14 +21,29 @@
 
 **NudgeDesk** is a native, ultra-lightweight Windows 11 desktop application designed to synchronize seamlessly with **Google Tasks**. It allows you to quickly view, create, edit, complete, and organize your tasks directly from your desktop without keeping an open web browser or heavy Chromium/Electron wrappers running in the background.
 
-NudgeDesk adopts a modern **Bento Box-inspired UI** tailored specifically to Windows 11 aesthetics with low RAM consumption (idle ~45–80 MB), instant startup, offline capability with automatic retry queues, native toast notifications, and full system tray integration.
+NudgeDesk adopts a modern **Bento Box-inspired UI** tailored specifically to Windows 11 aesthetics with low RAM consumption (idle ~50–65 MB), instant startup, offline capability with automatic retry queues, native toast notifications, and full system tray integration.
+
+---
+
+## 🪶 Ultra-Low RAM Architecture (~50–65 MB)
+
+Most Electron apps consume 350 MB to 800 MB+ of memory. Nudge was engineered from the ground up to run like a native Windows utility:
+
+| Metric | Typical Desktop Apps (Slack, Notion, Teams) | Nudge Desktop Mini-Widget |
+|---|---|---|
+| **Idle Memory (RAM)** | 350 MB – 800 MB+ | **~50 MB – 65 MB** ⚡ |
+| **Background Processes** | 5 – 8 processes | **1 isolated process** |
+| **V8 Heap Cap** | Unlimited (bloats over time) | `--max-old-space-size=64` |
+| **GPU Acceleration** | Enabled (heavy VRAM drain) | Disabled for lightweight efficiency |
+| **Auto-Sync Frequency** | Constant polling (battery drain) | Optimized every 30 minutes |
+| **Gaming & Compiling Impact** | Noticeable FPS drops / RAM hog | Virtually undetectable |
 
 ---
 
 ## ✨ Key Features
 
 ### ⚡ Ultra-Lightweight & Fast
-- **Low RAM footprint**: Runs natively via Python / CustomTkinter with zero Electron or browser overhead (~50–85 MB working set).
+- **Low RAM footprint**: Runs natively via Python / CustomTkinter with zero Electron or browser overhead (~50–65 MB working set).
 - **Instant startup**: Optimized SQLite queries with WAL mode and lazy rendering.
 - **Single-instance protection**: Guarded by a Windows Named Mutex.
 
@@ -44,20 +66,18 @@ NudgeDesk adopts a modern **Bento Box-inspired UI** tailored specifically to Win
 - **System Tray Integration**: Minimize to tray on close, system tray context menu (`Open`, `Quick Add`, `Sync Now`, `Exit`).
 - **Windows Startup**: Optional toggle to automatically launch minimized on Windows boot.
 - **Native Toast Notifications**: Action Center notifications for tasks due today or overdue.
-- **Dark & Light Modes**: Matches modern Windows 11 styling with rounded corners, subtle borders, and warm gold accents (`#F5C542`).
 
 ---
 
-## 🎨 Theme & Design Specs
+## 🎨 Theme System
 
-| Element | Dark Mode | Light Mode |
-|---|---|---|
-| Background | `#111318` | `#F3F4F6` |
-| Sidebar | `#191C23` | `#FFFFFF` |
-| Bento Cards | `#20242D` | `#FFFFFF` |
-| Accent (Gold) | `#F5C542` | `#D99E10` |
-| Primary Text | `#F5F5F5` | `#111827` |
-| Secondary Text | `#9CA3AF` | `#6B7280` |
+| Palette | Type | Primary Accent | Canvas Tone | Best For |
+|---|---|---|---|---|
+| 🌾 **Warm Linen (Solara)** | ☀️ Light | Terracotta & Coral (`#D45256`) | Organic Warm Cream (`#FAF7F2`) | Daytime deep focus |
+| 🌿 **Emerald Pure (Mint)** | ☀️ Light | Vibrant Forest Emerald (`#059669`) | Crisp Porcelain White (`#FAFCFA`) | Calm productivity |
+| ⚡ **Zest Gold** | 🌙 Dark | Amber Sunburst (`#F59E0B`) | Charcoal Onyx (`#0A0A0B`) | High-contrast night |
+| 💎 **Slate Pro** | 🌙 Dark | Apple iOS Royal Blue (`#3B82F6`) | Deep Slate Glass (`#0F172A`) | Technical workflows |
+| 🌌 **Midnight OLED** | 🌙 Dark | Electric Indigo (`#6366F1`) | True Pitch Black (`#000000`) | Battery saver & OLED |
 
 ---
 

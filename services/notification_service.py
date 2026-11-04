@@ -5,7 +5,7 @@ from datetime import datetime, date
 from pathlib import Path
 from typing import Set
 
-from config.constants import APP_NAME
+from config.constants import APP_NAME, get_asset_path
 from utils.config_manager import config_manager
 from utils.logger import logger
 from database.db_manager import db
@@ -21,7 +21,7 @@ class NotificationService:
 
     def __init__(self):
         self._notified_tasks: Set[str] = set()
-        self._icon_path = Path("assets/icons/app_icon.png").resolve()
+        self._icon_path = get_asset_path("assets/icons/app_icon.png")
 
     def send_notification(self, title: str, message: str) -> bool:
         """Sends an immediate Windows 11 toast notification."""

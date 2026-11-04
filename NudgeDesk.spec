@@ -1,22 +1,22 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
 from PyInstaller.utils.hooks import collect_all
 
-datas = [('C:/Users/Gishan/Desktop/ZWorks/Working_Now/Tasks for Win 11/assets', 'assets')]
+BASE_DIR = os.path.dirname(os.path.abspath(SPEC))
+
+datas = [(os.path.join(BASE_DIR, 'assets'), 'assets')]
 binaries = []
 hiddenimports = ['googleapiclient', 'google.auth', 'google_auth_oauthlib']
-tmp_ret = collect_all('customtkinter')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
-tmp_ret = collect_all('winotify')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
-tmp_ret = collect_all('pystray')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
-tmp_ret = collect_all('keyring')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
+for pkg in ['customtkinter', 'winotify', 'pystray', 'keyring']:
+    tmp_ret = collect_all(pkg)
+    datas += tmp_ret[0]
+    binaries += tmp_ret[1]
+    hiddenimports += tmp_ret[2]
 
 a = Analysis(
-    ['C:/Users/Gishan/Desktop/ZWorks/Working_Now/Tasks for Win 11/main.py'],
-    pathex=[],
+    [os.path.join(BASE_DIR, 'main.py')],
+    pathex=[BASE_DIR],
     binaries=binaries,
     datas=datas,
     hiddenimports=hiddenimports,
@@ -35,7 +35,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='NudgeDesk_Update',
+    name='NudgeDesk',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -48,5 +48,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['C:/Users/Gishan/Desktop/ZWorks/Working_Now/Tasks for Win 11/assets/icons/app_icon.ico'],
+    icon=[os.path.join(BASE_DIR, 'assets', 'icons', 'app_icon.ico')],
 )

@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Optional, Dict, Any
 
 from config.theme import Theme
-from config.constants import APP_NAME, APP_VERSION, STATUS_SYNCED, STATUS_SYNCING, STATUS_OFFLINE, STATUS_PENDING
+from config.constants import APP_NAME, APP_VERSION, STATUS_SYNCED, STATUS_SYNCING, STATUS_OFFLINE, STATUS_PENDING, get_asset_path
 from utils.config_manager import config_manager
 from utils.logger import logger
 from database.db_manager import db
@@ -55,7 +55,7 @@ class MainWindow(ctk.CTk):
         self.minsize(860, 580)
 
         # Set Window Icon
-        icon_ico = Path("assets/icons/app_icon.ico")
+        icon_ico = get_asset_path("assets/icons/app_icon.ico")
         if icon_ico.exists():
             try:
                 self.iconbitmap(str(icon_ico))

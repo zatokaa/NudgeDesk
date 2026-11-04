@@ -29,7 +29,7 @@ def clean_previous_builds(target_name: str = "NudgeDesk"):
             print(f"Warning: {target_exe} is currently in use.")
             return False
             
-    for spec in BASE_DIR.glob("*.spec"):
+    for spec in BASE_DIR.glob("*_Update.spec"):
         try:
             spec.unlink()
         except Exception:
@@ -37,41 +37,49 @@ def clean_previous_builds(target_name: str = "NudgeDesk"):
     return True
 
 def run_pyinstaller(onefile: bool = True, windowed: bool = True):
-    """Executes PyInstaller with all required flags and data collections."""
+    """Executes PyInstaller using the clean, portable NudgeDesk.spec."""
     target_name = "NudgeDesk"
     cleaned = clean_previous_builds(target_name)
     if not cleaned:
-        # If NudgeDesk.exe is locked by a running instance, build as NudgeDesk_Update.exe
         target_name = "NudgeDesk_Update"
         print(f"==> Target '{target_name}.exe' selected because original is running.")
         clean_previous_builds(target_name)
 
-    print(f"==> Building {target_name} (onefile={onefile}, windowed={windowed})...")
+    print(f"==> Building {target_name} via PyInstaller...")
     
-    cmd = [
-        sys.executable,
-        "-m",
-        "PyInstaller",
-        f"--name={target_name}",
-        f"--icon={ICON_PATH}",
-        f"--add-data={ASSETS_DIR};assets",
-        "--collect-all=customtkinter",
-        "--collect-all=winotify",
-        "--collect-all=pystray",
-        "--collect-all=keyring",
-        "--hidden-import=googleapiclient",
-        "--hidden-import=google.auth",
-        "--hidden-import=google_auth_oauthlib",
-        "--clean",
-        "--noconfirm",
-    ]
-
-    if onefile:
-        cmd.append("--onefile")
-    if windowed:
-        cmd.append("--windowed")
-
-    cmd.append(str(BASE_DIR / "main.py"))
+    spec_file = BASE_DIR / "NudgeDesk.spec"
+    if spec_file.exists() and target_name == "NudgeDesk":
+        cmd = [
+            sys.executable,
+            "-m",
+            "PyInstaller",
+            str(spec_file.name),
+            "--clean",
+            "--noconfirm",
+        ]
+    else:
+        cmd = [
+            sys.executable,
+            "-m",
+            "PyInstaller",
+            f"--name={target_name}",
+            "assets/icons/app_icon.ico",
+            "--add-data=assets;assets",
+            "--collect-all=customtkinter",
+            "--collect-all=winotify",
+            "--collect-all=pystray",
+            "--collect-all=keyring",
+            "--hidden-import=googleapiclient",
+            "--hidden-import=google.auth",
+            "--hidden-import=google_auth_oauthlib",
+            "--clean",
+            "--noconfirm",
+        ]
+        if onefile:
+            cmd.append("--onefile")
+        if windowed:
+            cmd.append("--windowed")
+        cmd.append("main.py")
 
     print(f"Executing: {' '.join(cmd)}")
     result = subprocess.run(cmd, cwd=str(BASE_DIR))

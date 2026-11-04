@@ -1,11 +1,29 @@
 """Constants and configuration defaults for NudgeDesk."""
 
 import os
+import sys
 from pathlib import Path
 
 APP_NAME = "NudgeDesk"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.1.0"
 APP_DESCRIPTION = "Lightweight Google Tasks Desktop Companion for Windows 11"
+
+def get_asset_path(relative_path: str) -> Path:
+    """Resolves asset path reliably across dev mode, PyInstaller onefile, and installed binary."""
+    # 1. PyInstaller temp extraction dir (_MEIPASS)
+    if getattr(sys, 'frozen', False):
+        if hasattr(sys, '_MEIPASS'):
+            candidate = Path(sys._MEIPASS) / relative_path
+            if candidate.exists():
+                return candidate
+        # 2. Next to the executable
+        candidate = Path(sys.executable).resolve().parent / relative_path
+        if candidate.exists():
+            return candidate
+            
+    # 3. Source repository root
+    base_dir = Path(__file__).resolve().parent.parent
+    return base_dir / relative_path
 
 # Application Data Directory
 APPDATA_DIR = Path(os.environ.get("APPDATA", Path.home())) / APP_NAME

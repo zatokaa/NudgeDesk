@@ -6,7 +6,7 @@ from typing import Callable, Optional, Dict, List
 from pathlib import Path
 
 from config.theme import Theme
-from config.constants import APP_NAME, STATUS_SYNCED, STATUS_SYNCING, STATUS_OFFLINE, STATUS_ERROR
+from config.constants import APP_NAME, STATUS_SYNCED, STATUS_SYNCING, STATUS_OFFLINE, STATUS_ERROR, get_asset_path
 from database.models import TaskList
 from utils.config_manager import config_manager
 
@@ -35,7 +35,7 @@ class Sidebar(ctk.CTkFrame):
         header_frame.pack_propagate(False)
 
         # App Icon
-        icon_path = Path("assets/icons/app_icon.png")
+        icon_path = get_asset_path("assets/icons/app_icon.png")
         if icon_path.exists():
             try:
                 pil_img = Image.open(icon_path)

@@ -1,4 +1,4 @@
-"""Windows Single-Instance protection using Win32 Named Mutex."""
+"""Windows Single-Instance protection using Win32 Named Mutex and window activation."""
 
 import ctypes
 from ctypes import wintypes
@@ -28,9 +28,36 @@ class SingleInstanceChecker:
             return True
         return False
 
+    def activate_existing_window(self) -> bool:
+        """Locates the running NudgeDesk window, un-hides it, restores it, and brings it to the front."""
+        try:
+            user32 = ctypes.windll.user32
+            WNDENUMPROC = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+            SW_RESTORE = 9
+            SW_SHOW = 5
+
+            target_hwnds = []
+            def _enum_windows_callback(hwnd, lparam):
+                length = user32.GetWindowTextLengthW(hwnd)
+                if length > 0:
+                    buff = ctypes.create_unicode_buffer(length + 1)
+                    user32.GetWindowTextW(hwnd, buff, length + 1)
+                    if "NudgeDesk" in buff.value:
+                        target_hwnds.append(hwnd)
+                return True
+
+            user32.EnumWindows(WNDENUMPROC(_enum_windows_callback), 0)
+            if target_hwnds:
+                hwnd = target_hwnds[0]
+                user32.ShowWindow(hwnd, SW_RESTORE)
+                user32.SetForegroundWindow(hwnd)
+                return True
+        except Exception as e:
+            logger.debug(f"Could not activate existing window: {e}")
+        return False
+
     def release(self) -> None:
         """Releases the mutex handle upon exit."""
         if self.mutex_handle:
             ctypes.windll.kernel32.CloseHandle(self.mutex_handle)
             self.mutex_handle = None
-

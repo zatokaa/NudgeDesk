@@ -7,7 +7,7 @@ from PIL import Image
 
 from utils.logger import logger
 from utils.config_manager import config_manager
-from config.constants import APP_NAME
+from config.constants import APP_NAME, get_asset_path
 
 try:
     import pystray
@@ -33,12 +33,16 @@ class TrayService:
             logger.warning("pystray is not installed, system tray disabled.")
             return
 
-        tray_icon_path = Path("assets/icons/tray_icon.png")
+        tray_icon_path = get_asset_path("assets/icons/tray_icon.png")
         if not tray_icon_path.exists():
-            tray_icon_path = Path("assets/icons/app_icon.png")
+            tray_icon_path = get_asset_path("assets/icons/app_icon.png")
 
         try:
-            image = Image.open(tray_icon_path)
+            if tray_icon_path.exists():
+                image = Image.open(tray_icon_path)
+            else:
+                # Fallback: create dynamic in-memory icon
+                image = Image.new("RGBA", (32, 32), (245, 197, 66, 255))
         except Exception as e:
             logger.error(f"Failed to load tray icon: {e}")
             return

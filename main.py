@@ -47,7 +47,8 @@ def main():
     # 1. Single Instance Protection
     single_instance = SingleInstanceChecker("Local\\NudgeDesk_SingleInstance_Mutex")
     if single_instance.is_running():
-        logger.warning("NudgeDesk is already running. Exiting duplicate instance.")
+        logger.info("NudgeDesk is already running. Activating existing window...")
+        single_instance.activate_existing_window()
         sys.exit(0)
 
     try:
